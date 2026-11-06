@@ -2,7 +2,7 @@
 /**
  * Clicky for WordPress plugin file.
  *
- * @package Yoast\Clicky\FrontEnd
+ * @package Clicky\FrontEnd
  */
 
 /**
@@ -13,7 +13,7 @@ class Clicky_Frontend {
 	/**
 	 * Holds the plugin options.
 	 *
-	 * @var array
+	 * @var array<string, bool|string>
 	 */
 	private $options = [];
 
@@ -33,13 +33,15 @@ class Clicky_Frontend {
 
 	/**
 	 * Add Clicky scripts to header.
+	 *
+	 * @return void
 	 */
 	public function script() {
 		if ( is_preview() ) {
 			return;
 		}
 
-		echo '<!-- Clicky Web Analytics - https://clicky.com, WordPress Plugin by Yoast - https://yoast.com/wordpress/plugins/clicky/ -->';
+		echo '<!-- Clicky Web Analytics - https://clicky.com, WordPress Plugin - https://wordpress.org/plugins/clicky/ -->';
 
 		// Bail early if current user is admin and ignore admin is true.
 		if ( $this->options['ignore_admin'] && current_user_can( 'manage_options' ) ) {
@@ -124,8 +126,10 @@ class Clicky_Frontend {
 	/**
 	 * Tracks comments that are not spam and not ping- or trackbacks.
 	 *
-	 * @param int $comment_id     The ID of the comment that needs to be tracked.
-	 * @param int $comment_status Status of the comment (e.g. spam).
+	 * @param int        $comment_id     The ID of the comment that needs to be tracked.
+	 * @param int|string $comment_status Status of the comment: 1, 0 or 'spam'.
+	 *
+	 * @return void
 	 */
 	public function track_comment( $comment_id, $comment_status ) {
 		// Make sure to only track the comment if it's not spam (but do it for moderated comments).
@@ -153,8 +157,10 @@ class Clicky_Frontend {
 	/**
 	 * Create the log for clicky.
 	 *
-	 * @param array $log_data The array with basic log-data.
-	 * @param array $custom   The array with custom log-data for the comment author.
+	 * @param array<string, string> $log_data The array with basic log-data.
+	 * @param array<string, string> $custom   The array with custom log-data for the comment author.
+	 *
+	 * @return void
 	 */
 	private function log_comment( $log_data, $custom ) {
 		$log_data['site_id']       = $this->options['site_id'];

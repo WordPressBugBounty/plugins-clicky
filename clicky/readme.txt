@@ -1,12 +1,12 @@
-=== Clicky by Yoast ===
-Contributors: joostdevalk, yoast
+=== Clicky for WordPress ===
+Contributors: joostdevalk
 Tags: analytics, statistics, clicky, getclicky, affiliate
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Requires at least: 5.9
 Tested up to: 6.1
-Requires PHP: 5.6.20
-Stable tag: 2.0
+Requires PHP: 7.4
+Stable tag: 2.1
 
 Integrates the Clicky web analytics service into your blog and adds features for comment tracking & more.
 
@@ -24,11 +24,9 @@ Integrates the [Clicky web analytics](http://clicky.com/145844) service into you
 * Easily add outbound link pattern matching for affiliate links etc.
 * Adds a small stats indicator of visitors in the last 48 to the WordPress toolbar.
 
-Read the authors [review of Clicky Analytics](https://yoast.com/clicky-analytics-review/) if you want to see a bit more of the cool integration this plugin provides.
-
 === Have you found an issue? ===
 
-If you have bugs to report, please go to [the plugin's GitHub repository](hhttps://github.com/jdevalk/clicky). For security issues, please use our [vulnerability disclosure program](https://patchstack.com/database/vdp/clicky), which is managed by PatchStack. They will assist you with verification, CVE assignment, and, of course, notify us.
+If you have bugs to report, please go to [the plugin's GitHub repository](https://github.com/jdevalk/clicky). For security issues, please use our [vulnerability disclosure program](https://patchstack.com/database/vdp/clicky), which is managed by PatchStack. They will assist you with verification, CVE assignment, and, of course, notify us.
 
 == Installation ==
 
@@ -37,13 +35,65 @@ If you have bugs to report, please go to [the plugin's GitHub repository](hhttps
 1. Enter your Site ID, Key and Admin Key.
 1. You're done, Clicky should start working.
 
+== Frequently Asked Questions ==
+
+= Was this plugin previously called Clicky by Yoast? =
+
+Yes. [Joost de Valk](https://joost.blog) originally wrote this plugin while he was still at Yoast, which is why it was published as Clicky by Yoast. When he left the company, he took the plugin with him. He now maintains it independently, under the name Clicky for WordPress.
+
+= Why don't I see any stats, or why is Clicky not tracking? =
+
+First, check that your Site ID, Site Key and Admin Site Key are entered under Settings &rarr; Clicky. You can find them in your Clicky account. The stats shown inside WordPress specifically require a correct Admin Site Key.
+
+If you have enabled "Ignore Admin users" under Settings &rarr; Clicky &rarr; Advanced Settings, your own visits while logged in as an administrator are not tracked, by design. Visit your site while logged out, or in a private browser window, to test tracking.
+
+If you use a caching plugin, make sure it does not serve cached pages to logged in users. Otherwise the setting above can't work, and admin users will still be tracked.
+
+= How do I disable the stats graph in the admin bar? =
+
+Go to Settings &rarr; Clicky &rarr; Advanced Settings and check "Disable Admin Bar stats".
+
+= Does this plugin work with WordPress multisite? =
+
+Yes. The settings are stored per site, so each site in the network has its own Site ID, Site Key and Admin Site Key, and can point to its own Clicky site.
+
+= Can I add my own clicky_custom data? =
+
+Yes. The plugin outputs its tracking script in your site's `wp_head` and never overwrites an existing `clicky_custom` object, so you can define your own `clicky_custom` values before that and the plugin will leave them alone.
+
+= Where is the tracking code inserted, and does it slow my site down? =
+
+The tracking code is added to the `<head>` of your site and loads asynchronously from Clicky's CDN, so it does not block your pages from rendering. Nothing else is loaded for your visitors.
+
+= Can I use Clicky without cookies? =
+
+Yes. Go to Settings &rarr; Clicky &rarr; Advanced Settings and check "Disable cookies". Visitors will then be told apart based on their IP address instead, which does reduce the quality of the tracking.
+
+= Does this plugin track WooCommerce orders? =
+
+No, there is no built-in WooCommerce integration. You can track posts and pages as goals and assign a revenue to them, using the Clicky Goal Tracking box in the editor. That works for any post type.
+
 == Screenshots ==
 
-1. The Clicky WordPress plugin settings panel.
-2. The Clicky metabox on posts and pages.
-3. The stats indicator on the WordPress Toolbar.
+1. The Clicky settings page: basic settings.
+2. The Clicky settings page: advanced settings and outbound link patterns.
+3. The Clicky metabox on posts and pages.
+4. The stats indicator on the WordPress Toolbar.
 
 == Changelog ==
+
+= 2.1 =
+
+Released November 6th, 2026
+
+* Drops support for PHP versions below 7.4. The plugin now requires PHP 7.4 or higher.
+
+* Rebrands the plugin as Clicky for WordPress, with new plugin artwork.
+* Removes the Yoast news and social links box from the settings page.
+* Deprecates the `Yoast\WP\Clicky\admin_footer` action hook in favour of the `clicky/admin_footer` hook.
+* Renames the `Yoast_Clicky` class to `Clicky_Plugin`. The old name remains available as an alias.
+* Removes the translation promo module and its unprotected dismiss handler, and links to the plugin's translation project on translate.wordpress.org from the settings page instead.
+* Fixes the setting descriptions on the Advanced settings tab, which showed HTML tags such as `<em>` and `<code>` as text.
 
 = 2.0 =
 
